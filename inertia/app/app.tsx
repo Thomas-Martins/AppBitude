@@ -1,6 +1,7 @@
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 import { createInertiaApp } from '@inertiajs/react'
 import { hydrateRoot } from 'react-dom/client'
+import 'virtual:uno.css'
 import '../css/app.css'
 
 const appName = import.meta.env.VITE_APP_NAME || 'AdonisJS'

@@ -50,6 +50,7 @@
     "prettier": "^3.2.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.2",
+    "unocss": "^0.58.5",
     "vite": "^5.1.5"
   },
   "dependencies": {
