@@ -6,7 +6,7 @@ export default function Home() {
       <Head title="Dashboard" />
 
       <div className="container">
-        <p>Dashboard</p>
+        <p className="">Dashboard</p>
       </div>
     </>
   )
