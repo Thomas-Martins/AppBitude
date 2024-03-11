@@ -1,24 +1,10 @@
-import { Head } from '@inertiajs/react'
 import Button from './components/button'
+import Layout from './components/layouts/layout'
 
 export default function Home() {
   return (
     <>
-      <Head title="Dashboard" />
-      <div className="w-full h-full">
-        <div className="shadow-lg bg-white">
-          <nav className="flex justify-center items-center px-10 py-7">
-            <div className="w-full flex justify-between items-center max-w-6xl">
-              <div className="text-3xl">
-                <p>App'Bitude</p>
-              </div>
-              <a href="/login">
-                <Button type="button">Login</Button>
-              </a>
-            </div>
-          </nav>
-        </div>
-
+      <Layout>
         <div>
           <div className="text-center mt-20">
             <h1 className="uppercase text-4xl">You want to track your habits ? </h1>
@@ -37,7 +23,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </div>
+      </Layout>
     </>
   )
 }
