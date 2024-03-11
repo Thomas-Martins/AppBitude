@@ -7,6 +7,7 @@ export default function Dashboard() {
 
   return (
     <div>
+      <div>{props.currentUser.username}</div>
       <form action="/logout">
         <button type="submit">Logout</button>
       </form>

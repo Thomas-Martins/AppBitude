@@ -6,12 +6,15 @@ export default class LoginController {
     return inertia.render('auth/login')
   }
 
-  async login({ auth, request, response }: HttpContext) {
+  async login({ auth, request, response, inertia }: HttpContext) {
     const { email, password } = request.only(['email', 'password'])
 
-    const user = await User.verifyCredentials(email, password)
-    await auth.use('web').login(user)
-
-    return response.redirect('/dashboard')
+    try {
+      const user = await User.verifyCredentials(email, password)
+      await auth.use('web').login(user)
+      return response.redirect('/dashboard')
+    } catch (error) {
+      return inertia.render('auth/login', { errorMessage: 'The email or password is incorrect.' })
+    }
   }
 }
