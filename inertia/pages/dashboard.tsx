@@ -1,3 +1,15 @@
+import { usePage } from '@inertiajs/react'
+
 export default function Dashboard() {
-  return <div>dashboard</div>
+  const { props } = usePage()
+
+  console.log(props)
+
+  return (
+    <div>
+      <form action="/logout">
+        <button type="submit">Logout</button>
+      </form>
+    </div>
+  )
 }
