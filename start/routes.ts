@@ -17,6 +17,7 @@ import { middleware } from './kernel.js'
 router
   .group(() => {
     router.get('/', ({ inertia }) => inertia.render('home'))
+    router.get('/test', ({ inertia }) => inertia.render('test'))
     router.get('/login', [LoginController, 'renderView'])
     router.get('/register', [RegisterController, 'renderView'])
   })
