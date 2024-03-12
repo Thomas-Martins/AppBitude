@@ -1,4 +1,5 @@
 import { Head } from '@inertiajs/react'
+import Footer from '../footer'
 import Header from '../header'
 
 interface DefaultLayoutProps {
@@ -8,11 +9,12 @@ export default function DefaultLayout(props: DefaultLayoutProps) {
   const { children } = props
   return (
     <div>
-      <Head title="Dashboard" />
-      <div className="w-full h-full">
-        <Header />
-        <div className="">{children}</div>
+      <Head title="Habits Tracker" />
+      <Header />
+      <div className="p-5">
+        <div>{children}</div>
       </div>
+      <Footer />
     </div>
   )
 }

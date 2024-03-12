@@ -12,7 +12,7 @@ export default function RegisterPage({ errorMessage }: any) {
             <Snackbar type="alert" message={errorMessage} />
           </div>
         )}
-        <div className="w-[450px] h-auto bg-white shadow-lg rounded-lg fixed top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] py-6 px-12">
+        <div className="mx-5 h-auto bg-white shadow-lg rounded-lg py-6 px-12 md:w-[500px] md:mx-auto md:mt-30">
           <h1 className="text-center text-xl font-bold mb-7">Create an account.</h1>
           <form action="/register" method="POST">
             <InputGroup label="Email" name="email" type="email" />
@@ -23,7 +23,9 @@ export default function RegisterPage({ errorMessage }: any) {
               name="password_confirmation"
               type="password"
             />
-            <Button type="submit">Register</Button>
+            <div className="text-center md:text-left">
+              <Button type="submit">Register</Button>
+            </div>
           </form>
           <div className="mt-8 text-center font-bold">
             <p>

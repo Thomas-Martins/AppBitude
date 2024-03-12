@@ -20,7 +20,7 @@ export default function Snackbar({ message, type = 'alert' }: SnackbarProps) {
 
   return (
     <div
-      className={`text-center w-sm h-14 mx-auto flex justify-center items-center text-white rounded-lg mt-20 ${bgColorClass}`}
+      className={`text-center w-sm h-14 mx-auto flex justify-center items-center text-white rounded-lg mt-10 md:mt-20 ${bgColorClass}`}
     >
       <div>{message}</div>
     </div>

@@ -6,7 +6,7 @@ export default function Home() {
     <>
       <DefaultLayout>
         <div>
-          <div className="text-center mt-20">
+          <div className="text-center mt-20 p-5">
             <h1 className="uppercase text-4xl">You want to track your habits ? </h1>
             <p className="mt-10">
               App'Bitude is an open source app for tracking habits to do more.
@@ -17,9 +17,9 @@ export default function Home() {
               </a>
             </div>
             <div>
-              <div className="mx-auto w-[800px] h-[400px] bg-dark-500 mt-20 rounded-lg">
+              {/* <div className="mx-auto w-[800px] h-[400px] bg-dark-500 mt-20 rounded-lg">
                 <span></span>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
