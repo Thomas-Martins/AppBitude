@@ -1,11 +1,11 @@
 import Button from '../components/button'
 import InputGroup from '../components/form/input_group'
-import Layout from '../components/layouts/layout'
+import DefaultLayout from '../components/layouts/default_layout'
 import Snackbar from '../components/snackbar'
 
 export default function RegisterPage({ errorMessage }: any) {
   return (
-    <Layout>
+    <DefaultLayout>
       <div className="">
         {errorMessage && (
           <div className="snackbar show ">
@@ -35,6 +35,6 @@ export default function RegisterPage({ errorMessage }: any) {
           </div>
         </div>
       </div>
-    </Layout>
+    </DefaultLayout>
   )
 }

@@ -1,10 +1,10 @@
 import { Head } from '@inertiajs/react'
 import Header from '../header'
 
-interface LayoutProps {
+interface DefaultLayoutProps {
   children: JSX.Element
 }
-export default function Layout(props: LayoutProps) {
+export default function DefaultLayout(props: DefaultLayoutProps) {
   const { children } = props
   return (
     <div>

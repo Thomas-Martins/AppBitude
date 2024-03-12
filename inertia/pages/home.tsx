@@ -1,10 +1,10 @@
 import Button from './components/button'
-import Layout from './components/layouts/layout'
+import DefaultLayout from './components/layouts/default_layout'
 
 export default function Home() {
   return (
     <>
-      <Layout>
+      <DefaultLayout>
         <div>
           <div className="text-center mt-20">
             <h1 className="uppercase text-4xl">You want to track your habits ? </h1>
@@ -23,7 +23,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </Layout>
+      </DefaultLayout>
     </>
   )
 }
