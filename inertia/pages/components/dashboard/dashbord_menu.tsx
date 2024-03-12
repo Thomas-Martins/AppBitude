@@ -6,7 +6,7 @@ interface DashboardMenuProps {
 
 const DashboardMenu = ({ isMobileMenuOpen }: DashboardMenuProps) => {
   return (
-    <div className={`color-white p-2 bg-red-500 ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
+    <div className={`color-white p-2 ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
       <div className="p-4 space-y-5">
         <div className="flex items-center gap-5">
           <LayoutDashboard size={28} />

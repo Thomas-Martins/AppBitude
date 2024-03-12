@@ -18,7 +18,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <div className="bg-primary-500 w-full h-full md:flex overflow-hidden">
       {/* Barre de menu (visible sur mobile) */}
-      <div className="md:hidden color-white p-2 bg-red-500">
+      <div className="md:hidden color-white p-2">
         <div className="p-4 flex justify-between border-b-solid border-b-1 ">
           <div>
             <p className="font-semibold">{props.currentUser.username}</p>
@@ -33,7 +33,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       <DashboardMenu isMobileMenuOpen={isMobileMenuOpen} />
 
       {/* Visible on tablet and Desktop */}
-      <div className="md:block md:h-full md:max-w-[200px] color-white p-2 bg-red-500 hidden">
+      <div className="md:block md:h-full md:max-w-[200px] color-white p-2 hidden">
         <div className="p-4 border-b-solid border-b-1">
           <p className="font-semibold">{props.currentUser.username}</p>
         </div>

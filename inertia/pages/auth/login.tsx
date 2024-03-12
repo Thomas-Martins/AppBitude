@@ -18,7 +18,9 @@ export default function LoginPage({ errorMessage }: any) {
             <InputGroup label="Email" name="email" type="email" />
             <InputGroup label="Password" name="password" type="password" />
 
-            <Button type="submit">Login</Button>
+            <div className="text-center md:text-left">
+              <Button type="submit">Login</Button>
+            </div>
           </form>
           <div className="mt-8 text-center font-bold">
             <p>
