@@ -1,4 +1,5 @@
 import { usePage } from '@inertiajs/react'
+import DashboardLayout from './components/layouts/dashboard_layout'
 
 export default function Dashboard() {
   const { props } = usePage()
@@ -6,11 +7,8 @@ export default function Dashboard() {
   console.log(props)
 
   return (
-    <div>
-      <div>{props.currentUser.username}</div>
-      <form action="/logout">
-        <button type="submit">Logout</button>
-      </form>
-    </div>
+    <DashboardLayout>
+      <div className="">Test</div>
+    </DashboardLayout>
   )
 }
