@@ -22,7 +22,7 @@ const DashboardMenu = ({ isMobileMenuOpen }: DashboardMenuProps) => {
           <Settings />
           <p>Settings</p>
         </div>
-        <div className="w-full bg-green-500 text-center">
+        <div className="w-full text-center">
           <form action="/logout">
             <button className="border-none w-full py-3 rounded-lg" type="submit">
               Logout
