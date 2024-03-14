@@ -1,14 +1,18 @@
 import { usePage } from '@inertiajs/react'
-import { Menu } from 'lucide-react'
+import { Menu, User } from 'lucide-react'
 import { useState } from 'react'
 import DashboardMenu from '../dashboard/dashbord_menu'
 
+interface User {
+  username: string
+}
 interface DashboardLayoutProps {
   children: JSX.Element
 }
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const { props } = usePage()
+  const currentUser = props.currentUser as User
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const toggleMobileMenu = () => {
@@ -17,11 +21,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   return (
     <div className="bg-primary-500 w-full h-full md:flex overflow-hidden">
-      {/* Barre de menu (visible sur mobile) */}
+      {/* Menu (visible on mobile) */}
       <div className="md:hidden color-white p-2">
         <div className="p-4 flex justify-between border-b-solid border-b-1 ">
-          <div>
-            <p className="font-semibold">{props.currentUser.username}</p>
+          <div className="flex items-center gap-3">
+            <div className="bg-dark-100 px-2 py-1.5 rounded-full color-black">
+              <User size={30} />
+            </div>
+            <p className="font-semibold">{currentUser.username}</p>
           </div>
           <button className="border-none bg-transparent color-white" onClick={toggleMobileMenu}>
             <Menu />
@@ -34,14 +41,17 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
       {/* Visible on tablet and Desktop */}
       <div className="md:block md:h-full md:max-w-[200px] color-white p-2 hidden">
-        <div className="p-4 border-b-solid border-b-1">
-          <p className="font-semibold">{props.currentUser.username}</p>
+        <div className="p-4 border-b-solid border-b-1 flex items-center gap-3">
+          <div className="bg-dark-100 px-2 py-1.5 rounded-full color-black">
+            <User size={30} />
+          </div>
+          <p className="font-semibold">{currentUser.username}</p>
         </div>
         <DashboardMenu isMobileMenuOpen={true} />
       </div>
 
-      <div className="m-4 p-10 bg-white md:w-full rounded-lg custom-shadow">
-        <div>{children}</div>
+      <div className="m-4 p-10 bg-white md:w-full rounded-lg custom-shadow gradient-background">
+        <div className="">{children}</div>
       </div>
     </div>
   )
