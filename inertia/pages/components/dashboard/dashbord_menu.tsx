@@ -6,25 +6,32 @@ interface DashboardMenuProps {
 
 const DashboardMenu = ({ isMobileMenuOpen }: DashboardMenuProps) => {
   return (
-    <div className={`color-white p-2 ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
-      <div className="p-4 space-y-5">
-        <div className="flex items-center gap-5">
+    <div className={`color-white ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
+      <div className="px-2 py-2">
+        <div className="flex items-center gap-5 p-3 rounded-xl mb-2 hover:bg-primary-600 transition duration-400">
           <LayoutDashboard size={28} />
           <a href="/dashboard" className="color-white decoration-none">
             Dashboard
           </a>
         </div>
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-5 p-3 rounded-xl mb-2 hover:bg-primary-600 transition duration-400">
           <CircleFadingPlus />
-          <p>Add Habits</p>
+          <a href="/habits" className="color-white decoration-none">
+            Add Habits
+          </a>
         </div>
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-5 p-3 rounded-xl mb-2 hover:bg-primary-600 transition duration-400">
           <Settings />
-          <p>Settings</p>
+          <a href="/user/settings" className="color-white decoration-none">
+            Settings
+          </a>
         </div>
-        <div className="w-full text-center">
+        <div className="w-full text-center mt-5">
           <form action="/logout">
-            <button className="border-none w-full py-3 rounded-lg" type="submit">
+            <button
+              className="border-none w-full py-3 rounded-lg hover:bg-dark-100 transition duration-400"
+              type="submit"
+            >
               Logout
             </button>
           </form>

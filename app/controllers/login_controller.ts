@@ -6,11 +6,12 @@ export default class LoginController {
     return inertia.render('auth/login')
   }
 
-  async login({ auth, request, response, inertia }: HttpContext) {
+  async login({ auth, request, response, inertia, session }: HttpContext) {
     const { email, password } = request.only(['email', 'password'])
 
     try {
       const user = await User.verifyCredentials(email, password)
+      session.put('authenticated_user', user.id)
       await auth.use('web').login(user)
       return response.redirect('/dashboard')
     } catch (error) {

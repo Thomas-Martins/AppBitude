@@ -1,4 +1,5 @@
 import { usePage } from '@inertiajs/react'
+import HabitsCard from './components/dashboard/habits_card'
 import DashboardLayout from './components/layouts/dashboard_layout'
 
 export default function Dashboard() {
@@ -8,7 +9,9 @@ export default function Dashboard() {
 
   return (
     <DashboardLayout>
-      <div className="">Test</div>
+      <div className="">
+        <HabitsCard />
+      </div>
     </DashboardLayout>
   )
 }

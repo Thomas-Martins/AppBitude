@@ -12,6 +12,8 @@ const RegisterController = () => import('#controllers/register_controller')
 const LogoutController = () => import('#controllers/logout_controller')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const SettingsController = () => import('#controllers/settings_controller')
+const HabitsController = () => import('#controllers/habits_controller')
 
 // Route for not connected users
 router
@@ -26,7 +28,10 @@ router
 // Route for connected users
 router
   .group(() => {
-    router.get('/dashboard', ({ inertia }) => inertia.render('dashboard')).use(middleware.auth())
+    router.get('/dashboard', ({ inertia }) => inertia.render('dashboard'))
+    router.get('/habits', [HabitsController, 'render'])
+    router.get('/user/settings', [SettingsController, 'render'])
+    router.post('/user/settings', [SettingsController, 'updateUserInfo'])
     router.get('/logout', [LogoutController]).as('auth.logout')
   })
   .middleware([middleware.auth()])

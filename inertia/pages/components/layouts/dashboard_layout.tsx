@@ -21,7 +21,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   return (
     <div className="bg-primary-500 w-full h-full md:flex overflow-hidden">
-      {/* Barre de menu (visible sur mobile) */}
+      {/* Menu (visible on mobile) */}
       <div className="md:hidden color-white p-2">
         <div className="p-4 flex justify-between border-b-solid border-b-1 ">
           <div className="flex items-center gap-3">
@@ -50,8 +50,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         <DashboardMenu isMobileMenuOpen={true} />
       </div>
 
-      <div className="m-4 p-10 bg-white md:w-full rounded-lg custom-shadow">
-        <div>{children}</div>
+      <div className="m-4 p-10 bg-white md:w-full rounded-lg custom-shadow gradient-background">
+        <div className="">{children}</div>
       </div>
     </div>
   )

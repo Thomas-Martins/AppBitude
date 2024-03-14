@@ -19,3 +19,12 @@ body,
 .custom-shadow {
   box-shadow: 0px 0px 15px #404040;
 }
+.gradient-background {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2)),
+    url('../assets/gradient_background.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+}
