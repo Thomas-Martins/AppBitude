@@ -36,7 +36,6 @@ export default function HabitsCard() {
 
   return (
     <div>
-      <h1>Habits Card</h1>
       <div className="md:flex gap-5">
         {habits.map((habit) => (
           <div className="w-[200px] h-auto text-center shadow-xl rounded-lg bg-white">

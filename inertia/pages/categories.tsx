@@ -26,6 +26,7 @@ export default function CategoriesPage(props: CategoriesPageProps) {
                 <th className="border border-gray-300 px-4 py-2">Name</th>
                 <th className="border border-gray-300 px-4 py-2">Icon</th>
                 <th className="border border-gray-300 px-4 py-2">Color</th>
+                <th className="border border-gray-300 px-4 py-2">Tag</th>
                 <th className="border border-gray-300 px-4 py-2">Actions</th>
               </tr>
             </thead>
@@ -41,6 +42,9 @@ export default function CategoriesPage(props: CategoriesPageProps) {
                       className="w-8 h-8 rounded mx-auto"
                       style={{ backgroundColor: category.color }}
                     ></div>
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    <div className="w-8 h-8 rounded mx-auto">{category.tag.name}</div>
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
                     <form action={`categories/delete/${category.id}`} method="post">

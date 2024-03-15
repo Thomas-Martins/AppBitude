@@ -33,7 +33,7 @@ router
     router.get('/dashboard', ({ inertia }) => inertia.render('dashboard'))
     router.get('/habits', [HabitsController, 'render'])
     router.get('/categories', [DefaultCategoryController, 'index'])
-    router.get('/categories/new', ({ inertia }) => inertia.render('add_categories'))
+    router.get('/categories/new', [DefaultCategoryController, 'categoryFormView'])
     router.post('/categories/new', [DefaultCategoryController, 'create'])
     router.post('/categories/delete/:id', [DefaultCategoryController, 'delete'])
     router.get('/user/settings', [SettingsController, 'render'])
