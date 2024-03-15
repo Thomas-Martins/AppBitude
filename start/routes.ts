@@ -9,6 +9,7 @@
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const DashboardController = () => import('#controllers/dashboard_controller')
 
 const LoginController = () => import('#controllers/login_controller')
 const RegisterController = () => import('#controllers/register_controller')
@@ -30,10 +31,11 @@ router
 // Route for connected users
 router
   .group(() => {
-    router.get('/dashboard', ({ inertia }) => inertia.render('dashboard'))
-    router.get('/habits', [HabitsController, 'render'])
+    router.get('/dashboard', [DashboardController, 'index'])
+    router.get('/habits', [HabitsController, 'addHabitsView'])
+    router.post('/habits/new/custom', [HabitsController, 'createCustomHabits'])
     router.get('/categories', [DefaultCategoryController, 'index'])
-    router.get('/categories/new', ({ inertia }) => inertia.render('add_categories'))
+    router.get('/categories/new', [DefaultCategoryController, 'categoryFormView'])
     router.post('/categories/new', [DefaultCategoryController, 'create'])
     router.post('/categories/delete/:id', [DefaultCategoryController, 'delete'])
     router.get('/user/settings', [SettingsController, 'render'])

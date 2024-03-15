@@ -7,6 +7,8 @@ import User, { type UserId } from './user.js'
 export type CustomCategoryId = Opaque<'customCategoryId', string>
 
 export default class CustomCategory extends BaseModel {
+  static table = 'custom_category'
+
   @column({ isPrimary: true })
   declare id: CustomCategoryId
 

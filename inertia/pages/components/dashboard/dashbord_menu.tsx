@@ -1,4 +1,4 @@
-import { CircleFadingPlus, LayoutDashboard, Settings, Tags } from 'lucide-react'
+import { LayoutDashboard, Settings, Tags } from 'lucide-react'
 
 interface DashboardMenuProps {
   isMobileMenuOpen: boolean
@@ -15,13 +15,6 @@ const DashboardMenu = ({ isMobileMenuOpen, userRole }: DashboardMenuProps) => {
         >
           <LayoutDashboard size={28} />
           <div>Dashboard</div>
-        </a>
-        <a
-          href="/habits"
-          className="flex items-center gap-5 p-3 rounded-xl mb-2 color-white decoration-none hover:bg-primary-600 transition duration-400"
-        >
-          <CircleFadingPlus />
-          <div>Add Habits</div>
         </a>
         {userRole === 'admin' && (
           <a

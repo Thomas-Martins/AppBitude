@@ -1,6 +1,8 @@
 import { Opaque } from '@adonisjs/core/types/helpers'
-import { BaseModel, column } from '@adonisjs/lucid/orm'
+import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import { DateTime } from 'luxon'
+import Tag, { type TagId } from './tag.js'
 
 export type DefaultCategoryId = Opaque<'defaultCategoryId', string>
 
@@ -24,4 +26,10 @@ export default class DefaultCategory extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+
+  @column()
+  declare tagId: TagId
+
+  @belongsTo(() => Tag)
+  declare tag: BelongsTo<typeof Tag>
 }

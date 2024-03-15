@@ -20,29 +20,23 @@ export default function CategoriesPage(props: CategoriesPageProps) {
           </a>
         </div>
         {categories && categories.length > 0 ? (
-          <table className="w-full border-collapse border border-gray-300">
+          <table className="w-full">
             <thead>
               <tr>
-                <th className="border border-gray-300 px-4 py-2">Name</th>
-                <th className="border border-gray-300 px-4 py-2">Icon</th>
-                <th className="border border-gray-300 px-4 py-2">Color</th>
-                <th className="border border-gray-300 px-4 py-2">Actions</th>
+                <th className="px-2 py-2">Name</th>
+                <th className="px-2 py-2">Actions</th>
               </tr>
             </thead>
             <tbody className="text-center">
               {categories.map((category) => (
                 <tr key={category.name}>
-                  <td className="border border-gray-300 px-4 py-2">{category.name}</td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    <LucideIcon name={category.icon} color={'#000'} size={20} />
+                  <td className="px-2 py-2 flex justify-start items-center gap-3">
+                    <div className="p-2 rounded-full flex items-center bg-white">
+                      <LucideIcon name={category.icon} color={category.color} size={20} />
+                    </div>
+                    <p className="text-sm lg:text-2xl">{category.name}</p>
                   </td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    <div
-                      className="w-8 h-8 rounded mx-auto"
-                      style={{ backgroundColor: category.color }}
-                    ></div>
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">
+                  <td className="">
                     <form action={`categories/delete/${category.id}`} method="post">
                       <Button type="submit">Delete</Button>
                     </form>
