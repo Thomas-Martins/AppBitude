@@ -43,6 +43,7 @@
     "@types/luxon": "^3.4.2",
     "@types/node": "^20.11.25",
     "@types/react": "^18.2.64",
+    "@types/react-color": "^3.0.12",
     "@types/react-dom": "^18.2.21",
     "@vitejs/plugin-react": "^4.2.1",
     "eslint": "^8.57.0",
@@ -70,6 +71,7 @@
     "luxon": "^3.4.4",
     "pg": "^8.11.3",
     "react": "^18.2.0",
+    "react-color-palette": "^7.1.0",
     "react-dom": "^18.2.0",
     "reflect-metadata": "^0.2.1"
   },

@@ -15,7 +15,7 @@ export default function Input(props: InputProps) {
     <input
       className="
         border-none
-        bg-dark-100
+        bg-light-500
         p-5
         rounded-lg
       "
