@@ -21,7 +21,7 @@ export default function HabitsCard({
   const [count, setCount] = useState(0)
 
   type IconProps = {
-    iconName: string
+    iconName: keyof typeof icons
     iconColor: string
     size: number
   }
@@ -42,7 +42,7 @@ export default function HabitsCard({
                 className="p-1 rounded-full flex justify-center items-center border-3 border-solid "
                 style={{ borderColor: color }}
               >
-                <Icon iconName={icon} iconColor={color} size={30} />
+                <Icon iconName={icon as keyof typeof icons} iconColor={color} size={30} />
               </div>
               <p className="font-bold text-2xl">{name}</p>
             </div>
