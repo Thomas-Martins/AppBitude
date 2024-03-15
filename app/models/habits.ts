@@ -22,10 +22,10 @@ export default class Habits extends BaseModel {
   declare userId: UserId
 
   @column()
-  declare defaultHabitsId: DefaultCategoryId
+  declare defaultCategoryId: DefaultCategoryId
 
   @column()
-  declare customHabitsId: CustomCategoryId
+  declare customCategoryId: CustomCategoryId
 
   @column()
   declare goalValue: number
@@ -40,8 +40,8 @@ export default class Habits extends BaseModel {
   declare user: BelongsTo<typeof User>
 
   @belongsTo(() => DefaultCategory)
-  declare defaultHabits: BelongsTo<typeof DefaultCategory>
+  declare defaultCategory: BelongsTo<typeof DefaultCategory>
 
   @belongsTo(() => CustomCategory)
-  declare customHabits: BelongsTo<typeof CustomCategory>
+  declare customCategory: BelongsTo<typeof CustomCategory>
 }

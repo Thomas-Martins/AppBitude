@@ -1,7 +1,14 @@
 import { Plus } from 'lucide-react'
+import { Habit } from '../../types/habit'
 import HabitsCard from './components/dashboard/habits_card'
 import DashboardLayout from './components/layouts/dashboard_layout'
-export default function Dashboard() {
+interface DashboardProps {
+  habits: Habit[]
+}
+export default function Dashboard(props: DashboardProps) {
+  const { habits } = props
+
+  console.log(habits)
   return (
     <DashboardLayout>
       <div className="w-full">
@@ -14,7 +21,26 @@ export default function Dashboard() {
             <Plus size={35} />
           </a>
         </div>
-        <HabitsCard />
+        {habits && habits.length > 0 ? (
+          <div>
+            {habits.map((habit) => (
+              <HabitsCard
+                name={habit.customCategory ? habit.customCategory.name : habit.defaultCategory.name}
+                goalValue={habit.goalValue}
+                goalUnit={habit.goalUnit}
+                value={habit.value}
+                icon={habit.customCategory ? habit.customCategory.icon : habit.defaultCategory.icon}
+                color={
+                  habit.customCategory ? habit.customCategory.color : habit.defaultCategory.color
+                }
+              />
+            ))}
+          </div>
+        ) : (
+          <div>
+            <p>Vous n'avez pas encore d'habitudes</p>
+          </div>
+        )}
       </div>
     </DashboardLayout>
   )

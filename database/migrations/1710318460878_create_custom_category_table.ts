@@ -9,7 +9,7 @@ export default class extends BaseSchema {
       table.string('name')
       table.string('icon').notNullable()
       table.string('color').notNullable()
-      table.uuid('id_user').references('id').inTable('users').onDelete('CASCADE')
+      table.uuid('user_id').references('id').inTable('users').onDelete('CASCADE')
 
       table.timestamp('created_at', { useTz: false }).notNullable()
       table.timestamp('updated_at', { useTz: false }).notNullable()
