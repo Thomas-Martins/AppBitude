@@ -5,6 +5,8 @@ import DashboardMenu from '../dashboard/dashbord_menu'
 
 interface User {
   username: string
+  email: string
+  role: string
 }
 interface DashboardLayoutProps {
   children: JSX.Element
@@ -20,7 +22,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   }
 
   return (
-    <div className="bg-primary-500 w-full h-full md:flex overflow-hidden">
+    <div className="bg-primary-500 w-full h-full md:flex">
       {/* Menu (visible on mobile) */}
       <div className="md:hidden color-white p-2">
         <div className="p-4 flex justify-between border-b-solid border-b-1 ">
@@ -37,7 +39,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       </div>
 
       {/* Visible on Mobile */}
-      <DashboardMenu isMobileMenuOpen={isMobileMenuOpen} />
+      <DashboardMenu isMobileMenuOpen={isMobileMenuOpen} userRole={currentUser.role} />
 
       {/* Visible on tablet and Desktop */}
       <div className="md:block md:h-full md:max-w-[200px] color-white p-2 hidden">
@@ -47,7 +49,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
           <p className="font-semibold">{currentUser.username}</p>
         </div>
-        <DashboardMenu isMobileMenuOpen={true} />
+        <DashboardMenu isMobileMenuOpen={true} userRole={currentUser.role} />
       </div>
 
       <div className="m-4 p-10 bg-white md:w-full rounded-lg custom-shadow gradient-background">

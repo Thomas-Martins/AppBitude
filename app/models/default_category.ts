@@ -5,6 +5,8 @@ import { DateTime } from 'luxon'
 export type DefaultCategoryId = Opaque<'defaultCategoryId', string>
 
 export default class DefaultCategory extends BaseModel {
+  static table = 'default_category'
+
   @column({ isPrimary: true })
   declare id: DefaultCategoryId
 

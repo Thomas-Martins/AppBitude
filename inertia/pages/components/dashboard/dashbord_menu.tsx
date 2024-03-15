@@ -1,31 +1,45 @@
-import { CircleFadingPlus, LayoutDashboard, Settings } from 'lucide-react'
+import { CircleFadingPlus, LayoutDashboard, Settings, Tags } from 'lucide-react'
 
 interface DashboardMenuProps {
   isMobileMenuOpen: boolean
+  userRole: string
 }
 
-const DashboardMenu = ({ isMobileMenuOpen }: DashboardMenuProps) => {
+const DashboardMenu = ({ isMobileMenuOpen, userRole }: DashboardMenuProps) => {
   return (
     <div className={`color-white ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
       <div className="px-2 py-2">
-        <div className="flex items-center gap-5 p-3 rounded-xl mb-2 hover:bg-primary-600 transition duration-400">
+        <a
+          href="/"
+          className="flex items-center gap-5 p-3 rounded-xl mb-2 color-white decoration-none hover:bg-primary-600 transition duration-400"
+        >
           <LayoutDashboard size={28} />
-          <a href="/dashboard" className="color-white decoration-none">
-            Dashboard
-          </a>
-        </div>
-        <div className="flex items-center gap-5 p-3 rounded-xl mb-2 hover:bg-primary-600 transition duration-400">
+          <div>Dashboard</div>
+        </a>
+        <a
+          href="/habits"
+          className="flex items-center gap-5 p-3 rounded-xl mb-2 color-white decoration-none hover:bg-primary-600 transition duration-400"
+        >
           <CircleFadingPlus />
-          <a href="/habits" className="color-white decoration-none">
-            Add Habits
+          <div>Add Habits</div>
+        </a>
+        {userRole === 'admin' && (
+          <a
+            href="/categories"
+            className="flex items-center gap-5 p-3 rounded-xl mb-2 color-white decoration-none hover:bg-primary-600 transition duration-400"
+          >
+            <Tags />
+            <div>Categories</div>
           </a>
-        </div>
-        <div className="flex items-center gap-5 p-3 rounded-xl mb-2 hover:bg-primary-600 transition duration-400">
+        )}
+
+        <a
+          href="/user/settings"
+          className="flex items-center gap-5 p-3 rounded-xl mb-2 color-white decoration-none hover:bg-primary-600 transition duration-400"
+        >
           <Settings />
-          <a href="/user/settings" className="color-white decoration-none">
-            Settings
-          </a>
-        </div>
+          <div>Settings</div>
+        </a>
         <div className="w-full text-center mt-5">
           <form action="/logout">
             <button

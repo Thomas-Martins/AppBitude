@@ -7,7 +7,7 @@ export default class RegisterController {
     return inertia.render('auth/register')
   }
 
-  async register({ auth, request, response, inertia }: HttpContext) {
+  async register({ auth, request, response, inertia, session }: HttpContext) {
     const { email, username, password, password_confirmation } = request.only([
       'email',
       'username',
@@ -16,6 +16,7 @@ export default class RegisterController {
     ])
     if (password === password_confirmation) {
       const user = await User.create({ email, password, username })
+      session.put('authenticated_user', user.id)
       await auth.use('web').login(user)
       return response.redirect('/dashboard')
     } else {
