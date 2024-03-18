@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+
 interface CircleProgressBarProps {
   percentage: number
   circleWidth: number
@@ -11,7 +13,12 @@ export default function CircleProgressBar({
 }: CircleProgressBarProps) {
   const radius = 70
   const dashArray = radius * Math.PI * 2
-  const dashOffset = dashArray - (dashArray * percentage) / 100
+  const [dashOffset, setDashOffset] = useState(dashArray)
+
+  useEffect(() => {
+    const newDashOffset = dashArray - (dashArray * percentage) / 100
+    setDashOffset(newDashOffset)
+  }, [percentage, dashArray])
 
   return (
     <div className="">
@@ -29,7 +36,12 @@ export default function CircleProgressBar({
           strokeWidth="15px"
           r={radius}
           className="circle-progress"
-          style={{ stroke: color, strokeDasharray: dashArray, strokeDashoffset: dashOffset }}
+          style={{
+            stroke: color,
+            strokeDasharray: dashArray,
+            strokeDashoffset: dashOffset,
+            transition: 'stroke-dashoffset 0.5s ease-in-out',
+          }}
           transform={`rotate(-90 ${circleWidth / 2} ${circleWidth / 2})`}
         />
       </svg>

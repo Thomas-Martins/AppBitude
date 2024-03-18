@@ -10,6 +10,7 @@ export default class DashboardController {
       .preload('customCategory')
       .preload('defaultCategory')
       .where('user_id', userId)
+      .orderBy('created_at', 'asc')
 
     // Vérifier si des habitudes ont été trouvées
     if (habits) {

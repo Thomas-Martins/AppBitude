@@ -28,6 +28,7 @@ export default function Dashboard(props: DashboardProps) {
             {habits.map((habit) => (
               <HabitsCard
                 key={habit.id}
+                idHabit={habit.id}
                 name={habit.customCategory ? habit.customCategory.name : habit.defaultCategory.name}
                 goalValue={habit.goalValue}
                 goalUnit={habit.goalUnit}

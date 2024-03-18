@@ -1,5 +1,3 @@
-// import type { HttpContext } from '@adonisjs/core/http'
-
 import CustomCategory from '#models/custom_category'
 import Habits from '#models/habits'
 import { HttpContext } from '@adonisjs/core/http'
@@ -11,7 +9,9 @@ export default class HabitsController {
 
   async createCustomHabits({ request, response, session }: HttpContext) {
     const userId = session.get('authenticated_user')
-    // 1. Créer la custom category
+    if (!userId) {
+      return response.redirect().toRoute('/login')
+    }
     const payload = request.only(['name', 'icon', 'color', 'goal_value', 'goal_unit'])
     const customCategory = await CustomCategory.create({
       name: payload.name,
@@ -37,5 +37,35 @@ export default class HabitsController {
   createDefaultHabits({ request, response }: HttpContext) {
     const payload = request.only(['name', 'icon', 'color', 'id_user', 'goal_value', 'goal_unit'])
     return response.json(payload)
+  }
+
+  async updateHabitsData({ request, response, params, session, inertia }: HttpContext) {
+    const userId = session.get('authenticated_user')
+    if (!userId) {
+      return response.redirect().toRoute('/login')
+    }
+
+    const payload = request.only(['value'])
+
+    const updatedHabits = await Habits.findOrFail(params.id)
+
+    if (updatedHabits) {
+      await updatedHabits.merge(payload).save()
+      return inertia.render('dashboard')
+    }
+
+    return response.status(404).json({ message: 'Error updating' })
+  }
+
+  async deleteHabit({ response, session, params }: HttpContext) {
+    const userId = session.get('authenticated_user')
+
+    if (!userId) {
+      return response.redirect().toRoute('/login')
+    }
+
+    const habitsToDelete = await Habits.findOrFail(params.id)
+    await habitsToDelete.delete()
+    return response.redirect().toRoute('/dashboard')
   }
 }
