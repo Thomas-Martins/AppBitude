@@ -26,3 +26,18 @@ body,
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+/* .progress-circle {
+  transform: rotate(-90deg);
+  margin-top: -40px;
+} */
+.circle-background {
+  fill: none;
+  stroke: #d8d8d8;
+}
+
+.circle-progress {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}

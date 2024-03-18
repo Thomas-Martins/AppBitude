@@ -1,10 +1,12 @@
 import { Plus } from 'lucide-react'
 import { Habit } from '../../types/habit'
-import HabitsCard from './components/dashboard/habits_card'
+import HabitsCard from './components/habits/habits_card'
 import DashboardLayout from './components/layouts/dashboard_layout'
+
 interface DashboardProps {
   habits: Habit[]
 }
+
 export default function Dashboard(props: DashboardProps) {
   const { habits } = props
 
@@ -22,9 +24,10 @@ export default function Dashboard(props: DashboardProps) {
           </a>
         </div>
         {habits && habits.length > 0 ? (
-          <div>
+          <div className="grid grid-cols-1 justify-items-center gap-5 md:grid md-grid-cols-2 md:justify-items-start md:gap- lg:grid-cols-3 xl:grid-cols-4">
             {habits.map((habit) => (
               <HabitsCard
+                key={habit.id}
                 name={habit.customCategory ? habit.customCategory.name : habit.defaultCategory.name}
                 goalValue={habit.goalValue}
                 goalUnit={habit.goalUnit}
