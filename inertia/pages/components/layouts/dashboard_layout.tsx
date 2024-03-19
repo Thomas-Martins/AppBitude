@@ -22,9 +22,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   }
 
   return (
-    <div className="bg-primary-500 w-full h-full md:flex">
+    <div className="bg-primary-500 w-full min-h-screen md:flex py-2">
       {/* Menu (visible on mobile) */}
-      <div className="md:hidden color-white p-2">
+      <div className="md:hidden color-white px-2">
         <div className="p-4 flex justify-between border-b-solid border-b-1 ">
           <div className="flex items-center gap-3">
             <div className="bg-dark-100 px-2 py-1.5 rounded-full color-black">
@@ -52,7 +52,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         <DashboardMenu isMobileMenuOpen={true} userRole={currentUser.role} />
       </div>
 
-      <div className="m-4 p-10 bg-white md:w-full rounded-lg custom-shadow gradient-background">
+      <div className="m-4 p-5 bg-white md:w-full rounded-lg custom-shadow gradient-background">
         <div className="">{children}</div>
       </div>
     </div>

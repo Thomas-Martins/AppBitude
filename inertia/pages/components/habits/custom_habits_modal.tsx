@@ -91,6 +91,18 @@ export default function CustomHabitsModal({ closeModal }: CustomHabitsModalProps
                 name="goal_unit"
                 placeholder="liters, minutes, etc"
               />
+              <div className="mb-5">
+                <p className="font-bold mb-2">Frequency</p>
+                <select
+                  name="frequency"
+                  id="frequency"
+                  className="border-none w-full p-4 text-lg bg-light-400 rounded-lg"
+                >
+                  <option value="Daily">Daily</option>
+                  <option value="Weekly">Weekly</option>
+                  <option value="Monthly">Monthly</option>
+                </select>
+              </div>
             </div>
             <div>
               <Button type="submit">Create</Button>

@@ -36,6 +36,9 @@ export default class Habits extends BaseModel {
   @column()
   declare value: number
 
+  @column()
+  declare frequency: string
+
   @belongsTo(() => User)
   declare user: BelongsTo<typeof User>
 

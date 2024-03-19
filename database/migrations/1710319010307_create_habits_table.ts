@@ -22,6 +22,7 @@ export default class extends BaseSchema {
       table.smallint('goal_value').notNullable()
       table.string('goal_unit').notNullable()
       table.smallint('value').notNullable().defaultTo(0)
+      table.string('frequency').defaultTo('Daily').notNullable()
       table.timestamp('created_at', { useTz: false }).notNullable()
       table.timestamp('updated_at', { useTz: false }).notNullable()
     })
