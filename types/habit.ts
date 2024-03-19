@@ -8,6 +8,7 @@ export interface Habit {
   goalValue: number
   goalUnit: string
   value: number
+  frequency: string
   customCategory: Category
   defaultCategory: Category
 }

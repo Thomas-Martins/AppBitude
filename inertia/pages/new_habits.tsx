@@ -1,19 +1,39 @@
-import { Carrot, CirclePlus, Droplets } from 'lucide-react'
+import { CirclePlus } from 'lucide-react'
 import { useState } from 'react'
+import { Category } from '~/types/category'
 import CustomHabitsModal from './components/habits/custom_habits_modal'
 import DefaultHabitsModal from './components/habits/default_habits_modal'
 import DashboardLayout from './components/layouts/dashboard_layout'
-export default function NewHabitsPage() {
+import LucideIcon from './components/lucide_icon'
+
+interface NewHabitsPageProps {
+  defaultCategories: Category[]
+}
+export default function NewHabitsPage(props: NewHabitsPageProps) {
+  const { defaultCategories } = props
   const [isCustomModalOpen, setIsCustomModalOpen] = useState(false)
   const [isDefaultModalOpen, setIsDefaultModalOpen] = useState(false)
+  const [defaultCategoryId, setDefaultCategoryId] = useState<string>('')
+  const [defaultCategoryName, setDefaultCategoryName] = useState<string>('')
+  const bodyCategory = defaultCategories.filter((category) => category.tag.name === 'Body')
+  const healthyCategory = defaultCategories.filter((category) => category.tag.name === 'Healthy')
+  const unhealthyCategory = defaultCategories.filter(
+    (category) => category.tag.name === 'Unhealthy'
+  )
+  const sportCategory = defaultCategories.filter((category) => category.tag.name === 'Sport')
+  const mindCategory = defaultCategories.filter((category) => category.tag.name === 'Mind')
 
   const customModal = () => {
     setIsCustomModalOpen(!isCustomModalOpen)
   }
-  const defaultModal = () => {
+  const defaultModal = (id: string, name: string) => {
+    setDefaultCategoryId(id)
+    setDefaultCategoryName(name)
     setIsDefaultModalOpen(!isDefaultModalOpen)
   }
-
+  const handleCloseDefaultModal = () => {
+    setIsDefaultModalOpen(!isDefaultModalOpen)
+  }
   return (
     <DashboardLayout>
       <div>
@@ -30,25 +50,106 @@ export default function NewHabitsPage() {
         </div>
 
         <div className="mt-10">
-          <div>
-            <h3 className="mb-5">Healthy habits</h3>
-            <div className="flex gap-2">
-              <div
-                onClick={defaultModal}
-                className="bg-white shadow-lg w-30 h-35 p-3 rounded-lg flex flex-col justify-center items-center cursor-pointer hover:bg-light-400 hover:color-primary-500 transition duration-300"
-              >
-                <Droplets size={30} />
-                <p className="mt-5 text-center">Drink Water</p>
-              </div>
-              <div
-                onClick={defaultModal}
-                className="bg-white shadow-lg w-30 h-35 p-3 rounded-lg flex flex-col justify-center items-center cursor-pointer hover:bg-light-400 hover:color-primary-500 transition duration-300"
-              >
-                <Carrot size={30} />
-                <p className="mt-5 text-center">Eat vegetables</p>
+          {defaultCategories && defaultCategories.length > 0 ? (
+            <div>
+              <div>
+                {bodyCategory.length > 0 && (
+                  <div className="space-y-3 mb-5">
+                    <h3>Body</h3>
+                    <div className="flex gap-3">
+                      {bodyCategory.map((category) => (
+                        <div>
+                          <div
+                            onClick={() => defaultModal(category.id, category.name)}
+                            className="bg-white shadow-lg w-30 h-35 p-3 rounded-lg flex flex-col justify-center items-center cursor-pointer hover:bg-light-400 hover:color-primary-500 transition duration-300"
+                          >
+                            <LucideIcon size={30} name={category.icon} color={category.color} />
+                            <p className="mt-5 text-center">{category.name}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {healthyCategory.length > 0 && (
+                  <div className="space-y-3 mb-5">
+                    <h3>Healthy</h3>
+                    <div className="flex gap-3">
+                      {healthyCategory.map((category) => (
+                        <div>
+                          <div
+                            onClick={() => defaultModal(category.id, category.name)}
+                            className="bg-white shadow-lg w-30 h-35 p-3 rounded-lg flex flex-col justify-center items-center cursor-pointer hover:bg-light-400 hover:color-primary-500 transition duration-300"
+                          >
+                            <LucideIcon size={30} name={category.icon} color={category.color} />
+                            <p className="mt-5 text-center">{category.name}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {unhealthyCategory.length > 0 && (
+                  <div className="space-y-3 mb-5">
+                    <h3>Unhealthy</h3>
+                    <div className="flex gap-3">
+                      {sportCategory.map((category) => (
+                        <div>
+                          <div
+                            onClick={() => defaultModal(category.id, category.name)}
+                            className="bg-white shadow-lg w-30 h-35 p-3 rounded-lg flex flex-col justify-center items-center cursor-pointer hover:bg-light-400 hover:color-primary-500 transition duration-300"
+                          >
+                            <LucideIcon size={30} name={category.icon} color={category.color} />
+                            <p className="mt-5 text-center">{category.name}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {sportCategory.length > 0 && (
+                  <div className="space-y-3 mb-5">
+                    <h3>Sport</h3>
+                    <div className="flex gap-3">
+                      {sportCategory.map((category) => (
+                        <div>
+                          <div
+                            onClick={() => defaultModal(category.id, category.name)}
+                            className="bg-white shadow-lg w-30 h-35 p-3 rounded-lg flex flex-col justify-center items-center cursor-pointer hover:bg-light-400 hover:color-primary-500 transition duration-300"
+                          >
+                            <LucideIcon size={30} name={category.icon} color={category.color} />
+                            <p className="mt-5 text-center">{category.name}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {mindCategory.length > 0 && (
+                  <div className="space-y-3 mb-5">
+                    <h3>Mind</h3>
+                    <div className="flex gap-3">
+                      {mindCategory.map((category) => (
+                        <div>
+                          <div
+                            onClick={() => defaultModal(category.id, category.name)}
+                            className="bg-white shadow-lg w-30 h-35 p-3 rounded-lg flex flex-col justify-center items-center cursor-pointer hover:bg-light-400 hover:color-primary-500 transition duration-300"
+                          >
+                            <LucideIcon size={30} name={category.icon} color={category.color} />
+                            <p className="mt-5 text-center">{category.name}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
-          </div>
+          ) : (
+            <div>
+              <p>Il n'y a pas de catégories par défauts.</p>
+            </div>
+          )}
         </div>
 
         {/* CustomModal */}
@@ -63,7 +164,11 @@ export default function NewHabitsPage() {
         {isDefaultModalOpen && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <div className="">
-              <DefaultHabitsModal closeModal={defaultModal} />
+              <DefaultHabitsModal
+                closeModal={handleCloseDefaultModal}
+                defaultCategoryId={defaultCategoryId}
+                defaultCategoryName={defaultCategoryName}
+              />
             </div>
           </div>
         )}

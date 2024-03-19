@@ -12,12 +12,9 @@ export default class DashboardController {
       .where('user_id', userId)
       .orderBy('created_at', 'asc')
 
-    // Vérifier si des habitudes ont été trouvées
     if (habits) {
-      // S'il y a des habitudes, les envoyer à la vue
       return inertia.render('dashboard', { habits })
     } else {
-      // S'il n'y a pas d'habitudes, envoyer un tableau vide à la vue
       return inertia.render('dashboard', { habits: [] })
     }
   }

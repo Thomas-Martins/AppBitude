@@ -1,42 +1,60 @@
 import CustomCategory from '#models/custom_category'
+import DefaultCategory from '#models/default_category'
 import Habits from '#models/habits'
 import { HttpContext } from '@adonisjs/core/http'
 
 export default class HabitsController {
-  addHabitsView({ inertia }: HttpContext) {
-    return inertia.render('new_habits')
+  async addHabitsView({ inertia }: HttpContext) {
+    const defaultCategories = await DefaultCategory.query().preload('tag')
+    return inertia.render('new_habits', { defaultCategories })
   }
 
   async createCustomHabits({ request, response, session }: HttpContext) {
+    // 1 - Check if the user is authenticated
     const userId = session.get('authenticated_user')
     if (!userId) {
       return response.redirect().toRoute('/login')
     }
-    const payload = request.only(['name', 'icon', 'color', 'goal_value', 'goal_unit'])
+    // 2 - Check the request
+    const payload = request.only(['name', 'icon', 'color', 'goal_value', 'goal_unit', 'frequency'])
+    // 3. Create the custom category
     const customCategory = await CustomCategory.create({
       name: payload.name,
       icon: payload.icon,
       color: payload.color,
       userId: userId,
     })
-    // 2. Récupérer l'id de la custom category créée
+
+    // return the id of the custom category
     const { id: customCategoryId } = customCategory
 
-    // 3. Créer la custom habit avec l'id de la custom category
+    // 4 - Create the habit with the id of the custom category, id of the user, the goal value and the goal unit, and the frequency
     await Habits.create({
       userId: userId,
       customCategoryId: customCategoryId,
       goalValue: payload.goal_value,
       goalUnit: payload.goal_unit,
+      frequency: payload.frequency,
     })
-
-    // 4. Retourner sur le dashboard
     return response.redirect().toRoute('/dashboard')
   }
 
-  createDefaultHabits({ request, response }: HttpContext) {
-    const payload = request.only(['name', 'icon', 'color', 'id_user', 'goal_value', 'goal_unit'])
-    return response.json(payload)
+  async createDefaultHabits({ request, response, session }: HttpContext) {
+    const userId = session.get('authenticated_user')
+    if (!userId) {
+      return response.redirect().toRoute('/login')
+    }
+    const payload = request.only(['id', 'goal_value', 'goal_unit', 'frequency'])
+
+    await Habits.create({
+      userId: userId,
+      defaultCategoryId: payload.id,
+      goalValue: payload.goal_value,
+      goalUnit: payload.goal_unit,
+      frequency: payload.frequency,
+    })
+
+    return response.redirect().toRoute('/dashboard')
   }
 
   async updateHabitsData({ request, response, params, session, inertia }: HttpContext) {

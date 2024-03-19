@@ -57,15 +57,14 @@ export default function HabitsCard({
     setProgress((updatedValue / goalValue) * 100)
   }
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    console.log(value)
-    await Inertia.post(`/habits/${idHabit}/update`, { value })
+    Inertia.post(`/habits/${idHabit}/update`, { value })
   }
 
   return (
     <div
-      className="relative w-[250px] h-auto text-center shadow-xl rounded-lg bg-white hover:scale-105 transition duration-500"
+      className="relative w-60 h-auto text-center shadow-xl rounded-lg bg-white hover:scale-105 transition duration-500"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
