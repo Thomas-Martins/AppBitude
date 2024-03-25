@@ -1,6 +1,7 @@
 import CustomCategory from '#models/custom_category'
 import DefaultCategory from '#models/default_category'
 import Habits from '#models/habits'
+import ResetHabits from '#models/reset_habits'
 import { HttpContext } from '@adonisjs/core/http'
 
 export default class HabitsController {
@@ -85,5 +86,62 @@ export default class HabitsController {
     const habitsToDelete = await Habits.findOrFail(params.id)
     await habitsToDelete.delete()
     return response.redirect().toRoute('/dashboard')
+  }
+
+  // Modifier la logique ou crée d'autre methode pour le weekly et le monthly
+  async resetDailyHabits({ session }: HttpContext) {
+    const userId = session.get('authenticated_user')
+    const currentDate = new Date().toISOString().split('T')[0]
+    let resetHabit = await ResetHabits.query().where('user_id', userId).first()
+    let lastResetDate: string | null = null
+
+    //variable avec la date de la vieille
+    const previousDate = new Date()
+    previousDate.setDate(previousDate.getDate() - 1)
+    const previousDateString = previousDate.toISOString().split('T')[0]
+
+    if (resetHabit) {
+      lastResetDate = resetHabit.date.toISOString().split('T')[0]
+    }
+
+    // Si je n'ai pas de date de reset enregistrée ou si la date de réinitialisation précédente est différente de la date actuelle
+    if (!lastResetDate || lastResetDate !== currentDate) {
+      // Je récupère les habitudes avec une fréquence daily
+      const dailyHabits = await Habits.query()
+        .where('frequency', 'Daily')
+        .where('user_id', userId)
+        .where('date', previousDateString)
+      // Je boucle sur les habitudes
+      await Promise.all(
+        dailyHabits.map(async (habit: any) => {
+          const habitDate = habit.date.toISOString().split('T')[0]
+          // Si la date de création de l'habitude est différente de la date du jour
+          // on crée une nouvelle habitude identique avec une valeur de 0
+          if (habitDate !== currentDate) {
+            await Habits.create({
+              userId: userId,
+              customCategoryId: habit.customCategoryId,
+              defaultCategoryId: habit.defaultCategoryId,
+              goalValue: habit.goalValue,
+              goalUnit: habit.goalUnit,
+              frequency: habit.frequency,
+              value: 0,
+              date: currentDate,
+            })
+          }
+        })
+      )
+
+      // Une fois les habitudes créées, j'ajoute ou je mets à jour la date de reset avec l'id de l'utilisateur en bdd pour limiter le reset
+      if (!lastResetDate) {
+        // S'il n'y a pas de date de reset enregistrée, je crée une nouvelle entrée dans la table ResetHabits
+        await ResetHabits.create({ date: new Date(currentDate), userId: userId })
+      } else {
+        // S'il y a une date de reset enregistrée, je mets à jour la date avec la date actuelle
+        await ResetHabits.query()
+          .where('user_id', userId)
+          .update({ date: new Date(currentDate) })
+      }
+    }
   }
 }

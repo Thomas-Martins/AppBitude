@@ -22,7 +22,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   }
 
   return (
-    <div className="bg-primary-500 w-full min-h-screen md:flex py-2">
+    <div className="bg-primary-500 w-full min-h-screen md:flex">
       {/* Menu (visible on mobile) */}
       <div className="md:hidden color-white px-2">
         <div className="p-4 flex justify-between border-b-solid border-b-1 ">
