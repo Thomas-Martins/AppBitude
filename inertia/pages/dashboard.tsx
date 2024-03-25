@@ -5,6 +5,8 @@ import DashboardLayout from './components/layouts/dashboard_layout'
 
 interface DashboardProps {
   habits: Habit[]
+  resetDailyHabits: Habit[]
+  test: string
 }
 
 export default function Dashboard(props: DashboardProps) {

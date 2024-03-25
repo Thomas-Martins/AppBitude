@@ -23,6 +23,7 @@ export default class extends BaseSchema {
       table.string('goal_unit').notNullable()
       table.smallint('value').notNullable().defaultTo(0)
       table.string('frequency').defaultTo('Daily').notNullable()
+      table.date('date').notNullable().defaultTo(this.db.rawQuery('CURRENT_DATE').knexQuery)
       table.timestamp('created_at', { useTz: false }).notNullable()
       table.timestamp('updated_at', { useTz: false }).notNullable()
     })
