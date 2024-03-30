@@ -64,7 +64,7 @@ export default function HabitsCard({
 
   return (
     <div
-      className="relative w-60 h-auto text-center shadow-xl rounded-lg bg-white hover:scale-105 transition duration-500"
+      className="relative w-full h-auto text-center shadow-xl rounded-lg bg-white hover:scale-105 transition duration-500 md:w-60"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -117,7 +117,6 @@ export default function HabitsCard({
           >
             <CirclePlus size={40} />
           </button>
-          {/* <input type="hidden" id="value" name="value" value={value} /> */}
         </form>
       </div>
     </div>

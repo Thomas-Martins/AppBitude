@@ -93,55 +93,73 @@ export default class HabitsController {
     const userId = session.get('authenticated_user')
     const currentDate = new Date().toISOString().split('T')[0]
     let resetHabit = await ResetHabits.query().where('user_id', userId).first()
-    let lastResetDate: string | null = null
+    let lastResetDate: string = resetHabit ? resetHabit.date.toISOString().split('T')[0] : ''
 
-    //variable avec la date de la vieille
-    const previousDate = new Date()
-    previousDate.setDate(previousDate.getDate() - 1)
-    const previousDateString = previousDate.toISOString().split('T')[0]
-
-    if (resetHabit) {
-      lastResetDate = resetHabit.date.toISOString().split('T')[0]
-    }
-
-    // Si je n'ai pas de date de reset enregistrée ou si la date de réinitialisation précédente est différente de la date actuelle
     if (!lastResetDate || lastResetDate !== currentDate) {
-      // Je récupère les habitudes avec une fréquence daily
-      const dailyHabits = await Habits.query()
+      const latestHabit = await Habits.query()
         .where('frequency', 'Daily')
         .where('user_id', userId)
-        .where('date', previousDateString)
-      // Je boucle sur les habitudes
-      await Promise.all(
-        dailyHabits.map(async (habit: any) => {
-          const habitDate = habit.date.toISOString().split('T')[0]
-          // Si la date de création de l'habitude est différente de la date du jour
-          // on crée une nouvelle habitude identique avec une valeur de 0
-          if (habitDate !== currentDate) {
-            await Habits.create({
-              userId: userId,
-              customCategoryId: habit.customCategoryId,
-              defaultCategoryId: habit.defaultCategoryId,
-              goalValue: habit.goalValue,
-              goalUnit: habit.goalUnit,
-              frequency: habit.frequency,
-              value: 0,
-              date: currentDate,
-            })
-          }
-        })
-      )
+        .where('date', lastResetDate ? lastResetDate : currentDate)
+        .orderBy('created_at', 'desc')
+        .first()
 
-      // Une fois les habitudes créées, j'ajoute ou je mets à jour la date de reset avec l'id de l'utilisateur en bdd pour limiter le reset
-      if (!lastResetDate) {
-        // S'il n'y a pas de date de reset enregistrée, je crée une nouvelle entrée dans la table ResetHabits
+      if (latestHabit) {
+        const habitsBetweenDates = await Habits.query()
+          .where('frequency', 'Daily')
+          .where('user_id', userId)
+          .whereBetween('date', [lastResetDate, currentDate])
+
+        const existingDates = habitsBetweenDates.map(
+          (habit: any) => habit.date.toISOString().split('T')[0]
+        )
+
+        const allDates = await this.getMissingDates(lastResetDate, currentDate)
+
+        for (const habit of habitsBetweenDates) {
+          const missingDatesForHabit = allDates.filter(
+            (date: string) => !existingDates.includes(date)
+          )
+
+          await Promise.all(
+            missingDatesForHabit.map(async (date: string) => {
+              await Habits.create({
+                userId: userId,
+                customCategoryId: habit.customCategoryId,
+                defaultCategoryId: habit.defaultCategoryId,
+                goalValue: habit.goalValue,
+                goalUnit: habit.goalUnit,
+                frequency: 'Daily',
+                value: 0,
+                date: date,
+              })
+            })
+          )
+        }
+      }
+      console.log(currentDate)
+
+      if (!resetHabit) {
         await ResetHabits.create({ date: new Date(currentDate), userId: userId })
       } else {
-        // S'il y a une date de reset enregistrée, je mets à jour la date avec la date actuelle
         await ResetHabits.query()
           .where('user_id', userId)
           .update({ date: new Date(currentDate) })
       }
     }
+  }
+
+  // Fonction pour obtenir les dates manquantes entre deux dates
+  async getMissingDates(startDate: string, endDate: string): Promise<string[]> {
+    const missingDates: string[] = []
+    const start = new Date(startDate)
+    const end = new Date(endDate)
+    const currentDate = new Date(start)
+
+    while (currentDate < end) {
+      currentDate.setDate(currentDate.getDate() + 1)
+      missingDates.push(currentDate.toISOString().split('T')[0])
+    }
+
+    return missingDates
   }
 }
