@@ -1,37 +1,69 @@
+// Dashboard.tsx
+
 import { Plus } from 'lucide-react'
 import { Habit } from '../../types/habit'
+import ChartSection from './chart_section'
 import HabitsCard from './components/habits/habits_card'
 import DashboardLayout from './components/layouts/dashboard_layout'
 
 interface DashboardProps {
   habits: Habit[]
-  resetDailyHabits: Habit[]
-  test: string
 }
 
-export default function Dashboard(props: DashboardProps) {
-  const { habits } = props
+export default function Dashboard({ habits }: DashboardProps) {
+  //today
+  const today = new Date().toISOString().split('T')[0]
 
-  // Filtrer les habitudes par fréquence
-  const dailyHabits = habits.filter((habit) => habit.frequency === 'Daily')
-  const weeklyHabits = habits.filter((habit) => habit.frequency === 'Weekly')
-  const monthlyHabits = habits.filter((habit) => habit.frequency === 'Monthly')
+  //start of the week
+  const startOfWeek = new Date()
+  const dayOfWeek = startOfWeek.getDay() // Récupère le jour de la semaine (0 = dimanche, 1 = lundi, ..., 6 = samedi)
+  const diff = startOfWeek.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1) // Calcule la différence à soustraire pour obtenir le lundi précédent
+  startOfWeek.setDate(diff) // Définit la date au lundi précédent
+
+  //start of the month
+  const startOfMonth = new Date()
+  startOfMonth.setDate(1)
+
+  const dailyHabits = habits.filter(
+    (habit) => habit.frequency === 'Daily' && habit.date.toString().split('T')[0] === today
+  )
+  const weeklyHabits = habits.filter((habit) => {
+    const habitDate = new Date(habit.date)
+    return habit.frequency === 'Weekly' && habitDate >= startOfWeek
+  })
+  const monthlyHabits = habits.filter((habit) => {
+    const habitDate = new Date(habit.date)
+    return habit.frequency === 'Monthly' && habitDate >= startOfMonth
+  })
 
   return (
     <DashboardLayout>
       <div className="w-full relative">
-        <div className="absolute top-0 right-0">
-          <a
-            href="/habits"
-            className="flex items-center gap-5 p-3 rounded-full mb-2 decoration-none color-black hover:bg-light-400 transition duration-400"
-          >
-            <Plus size={35} />
-          </a>
+        <div>
+          {habits.length === 0 ? (
+            <div className="flex justify-between items-center ">
+              <div>
+                <p>You don't have any habits for the moment.</p>
+              </div>
+              <div className=" p-2 rounded-full  hover:bg-light-400 transition duration-400">
+                <a href="/habits/new" className="flex items-center decoration-none color-black">
+                  <Plus size={35} />
+                </a>
+              </div>
+            </div>
+          ) : (
+            <div className="absolute top-0 right-0 p-2 rounded-full hover:bg-light-400 transition duration-400">
+              <a href="/habits/new" className="flex items-center decoration-none color-black ">
+                <Plus size={35} />
+              </a>
+            </div>
+          )}
         </div>
+
         {dailyHabits.length > 0 && (
-          <div className="mb-5 space-y-5">
+          <div className="mb-10 space-y-6">
             <h2>Today</h2>
-            <div className="grid grid-cols-1 justify-items-center gap-5 md:grid-cols-2 md:justify-items-start lg:grid-cols-3 xl:grid-cols-4">
+            <div className="flex flex-col gap-5 justify-center items-center md:flex-row md:flex-wrap md:justify-start">
               {dailyHabits.map((habit) => (
                 <HabitsCard
                   key={habit.id}
@@ -53,11 +85,10 @@ export default function Dashboard(props: DashboardProps) {
             </div>
           </div>
         )}
-
         {weeklyHabits.length > 0 && (
           <div className="mb-5 space-y-5">
             <h2>This Week</h2>
-            <div className="grid grid-cols-1 justify-items-center gap-5 md:grid md-grid-cols-2 md:justify-items-start md:gap- lg:grid-cols-3 xl:grid-cols-4">
+            <div className="flex flex-col gap-5 justify-center items-center md:flex-row md:flex-wrap md:justify-start">
               {weeklyHabits.map((habit) => (
                 <HabitsCard
                   key={habit.id}
@@ -82,7 +113,7 @@ export default function Dashboard(props: DashboardProps) {
         {monthlyHabits.length > 0 && (
           <div className="mb-5 space-y-5">
             <h2>This Month</h2>
-            <div className="grid grid-cols-1 justify-items-center gap-5 md:grid md-grid-cols-2 md:justify-items-start md:gap- lg:grid-cols-3 xl:grid-cols-4">
+            <div className="flex flex-col gap-5 justify-center items-center md:flex-row md:flex-wrap md:justify-start">
               {monthlyHabits.map((habit) => (
                 <HabitsCard
                   key={habit.id}
@@ -104,11 +135,10 @@ export default function Dashboard(props: DashboardProps) {
             </div>
           </div>
         )}
-        {habits.length === 0 && (
-          <div>
-            <p>Vous n'avez pas encore d'habitudes</p>
-          </div>
-        )}
+        {/* Section Graphique */}
+        <div>
+          <ChartSection data={habits} />
+        </div>
       </div>
     </DashboardLayout>
   )

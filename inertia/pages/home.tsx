@@ -9,7 +9,7 @@ export default function Home() {
           <div className="text-center mt-20 p-5">
             <h1 className="uppercase text-4xl">You want to track your habits ? </h1>
             <p className="mt-10">
-              App'Bitude is an open source app for tracking habits to do more.
+              Habits Tracker is an open source app for tracking habits to do more.
             </p>
             <div className="mt-10">
               <a href="/register">

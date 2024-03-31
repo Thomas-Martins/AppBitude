@@ -32,7 +32,8 @@ router
 router
   .group(() => {
     router.get('/dashboard', [DashboardController, 'index'])
-    router.get('/habits', [HabitsController, 'addHabitsView'])
+    router.get('/habits', [HabitsController, 'index'])
+    router.get('/habits/new', [HabitsController, 'addHabitsView'])
     router.post('/habits/new/custom', [HabitsController, 'createCustomHabits'])
     router.post('/habits/new/default', [HabitsController, 'createDefaultHabits'])
     router.post('/habits/:id/update', [HabitsController, 'updateHabitsData'])

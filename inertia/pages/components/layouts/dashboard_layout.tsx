@@ -22,10 +22,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   }
 
   return (
-    <div className="bg-primary-500 w-full min-h-screen md:flex">
+    <div className="bg-primary-500 p-5 w-auto min-h-full md:flex box-border gap-5">
       {/* Menu (visible on mobile) */}
       <div className="md:hidden color-white px-2">
-        <div className="p-4 flex justify-between border-b-solid border-b-1 ">
+        <div className="py-4 flex justify-between border-b-solid border-b-1 mb-3">
           <div className="flex items-center gap-3">
             <div className="bg-dark-100 px-2 py-1.5 rounded-full color-black">
               <User size={30} />
@@ -43,7 +43,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
       {/* Visible on tablet and Desktop */}
       <div className="md:block md:h-full md:max-w-[200px] color-white p-2 hidden">
-        <div className="p-4 border-b-solid border-b-1 flex items-center gap-3">
+        <div className="py-4 border-b-solid border-b-1 flex items-center gap-3 mb-3">
           <div className="bg-dark-100 px-2 py-1.5 rounded-full color-black">
             <User size={30} />
           </div>
@@ -52,8 +52,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         <DashboardMenu isMobileMenuOpen={true} userRole={currentUser.role} />
       </div>
 
-      <div className="m-4 p-5 bg-white md:w-full rounded-lg custom-shadow gradient-background">
-        <div className="">{children}</div>
+      <div className="mt-5 p-5 bg-white min-h-15 md:w-full rounded-lg custom-shadow gradient-background">
+        <div className="h-full">{children}</div>
       </div>
     </div>
   )

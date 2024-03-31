@@ -8,6 +8,7 @@ export default class extends BaseSchema {
       table.uuid('id').primary().defaultTo(this.db.rawQuery('gen_random_uuid()').knexQuery)
       table.date('date').notNullable().defaultTo(this.db.rawQuery('CURRENT_DATE').knexQuery)
       table.uuid('user_id').references('id').inTable('users').onDelete('CASCADE')
+      table.string('type').notNullable()
     })
   }
 

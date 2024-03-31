@@ -68,7 +68,7 @@ export default function CustomHabitsModal({ closeModal }: CustomHabitsModalProps
                   key={name}
                   type="button"
                   onClick={() => handleIconClick(name)}
-                  className={`bg-white border-none w-12 h-12 mr-2 mb-2 rounded-full border-2 border-white border-solid hover:bg-light-500 hover:border-dark-400 transition duration-300 ${selectedIcon === name ? 'focus:outline-none focus:ring-2 focus:ring-primary-500' : ''}`}
+                  className={`bg-white border-none w-12 h-12 mr-2 mb-2 rounded-full border-2 border-white border-solid hover:bg-light-500 hover:border-dark-400 transition duration-300 ${selectedIcon === name ? 'outline-none ring-3 ring-primary-500' : ''}`}
                 >
                   <LucideIcon name={name} size={30} color={'#000'} />
                 </button>
