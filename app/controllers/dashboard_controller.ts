@@ -7,6 +7,7 @@ export default class DashboardController {
     const userId = session.get('authenticated_user')
 
     await new HabitsController().resetDailyHabits({ session })
+    await new HabitsController().resetWeeklyHabits({ session })
 
     // Chercher les habitudes de l'utilisateur
     const habits = await Habits.query()

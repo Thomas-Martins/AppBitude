@@ -79,9 +79,9 @@ export default function ChartSection({ data }: ChartSectionProps) {
             <h2 className="mb-5">Stats</h2>
             <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 2xl:grid-cols-3">
               {chartDatas.map((chartData, index) => (
-                <div key={index} className="">
+                <>
                   {chartData.datasets[0].data.length >= 2 && (
-                    <div className="bg-white rounded-xl p-5 shadow-xl">
+                    <div key={index} className="bg-white rounded-xl p-5 shadow-xl">
                       <h3 className="mb-5">{chartData.datasets[0].label} </h3>
                       <Line
                         data={chartData}
@@ -110,7 +110,7 @@ export default function ChartSection({ data }: ChartSectionProps) {
                       />
                     </div>
                   )}
-                </div>
+                </>
               ))}
             </div>
           </div>

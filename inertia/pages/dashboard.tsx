@@ -11,10 +11,16 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ habits }: DashboardProps) {
-  // Filtrer les habitudes par fréquence et période
+  //today
   const today = new Date().toISOString().split('T')[0]
+
+  //start of the week
   const startOfWeek = new Date()
-  startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay())
+  const dayOfWeek = startOfWeek.getDay() // Récupère le jour de la semaine (0 = dimanche, 1 = lundi, ..., 6 = samedi)
+  const diff = startOfWeek.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1) // Calcule la différence à soustraire pour obtenir le lundi précédent
+  startOfWeek.setDate(diff) // Définit la date au lundi précédent
+
+  //start of the month
   const startOfMonth = new Date()
   startOfMonth.setDate(1)
 

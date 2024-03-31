@@ -83,12 +83,23 @@ export default class HabitsController {
       return response.redirect().toRoute('/login')
     }
 
-    const habitsToDelete = await Habits.findOrFail(params.id)
-    await habitsToDelete.delete()
+    const habitToRef = await Habits.findOrFail(params.id)
+
+    if (habitToRef.defaultCategoryId) {
+      const habitsToDelete = await Habits.query()
+        .where('default_category_id', habitToRef.defaultCategoryId)
+        .where('user_id', userId)
+      habitsToDelete.map((habit) => habit.delete())
+    } else if (habitToRef.customCategoryId) {
+      const habitsToDelete = await Habits.query()
+        .where('custom_category_id', habitToRef.customCategoryId)
+        .where('user_id', userId)
+      habitsToDelete.map((habit) => habit.delete())
+    }
+
     return response.redirect().toRoute('/dashboard')
   }
 
-  // Modifier la logique ou crée d'autre methode pour le weekly et le monthly
   async resetDailyHabits({ session }: HttpContext) {
     const userId = session.get('authenticated_user')
     const currentDate = new Date().toISOString().split('T')[0]
@@ -122,42 +133,141 @@ export default class HabitsController {
 
           await Promise.all(
             missingDatesForHabit.map(async (date: string) => {
-              await Habits.create({
-                userId: userId,
-                customCategoryId: habit.customCategoryId,
-                defaultCategoryId: habit.defaultCategoryId,
-                goalValue: habit.goalValue,
-                goalUnit: habit.goalUnit,
-                frequency: 'Daily',
-                value: 0,
-                date: date,
-              })
+              try {
+                await Habits.create({
+                  userId: userId,
+                  customCategoryId: habit.customCategoryId,
+                  defaultCategoryId: habit.defaultCategoryId,
+                  goalValue: habit.goalValue,
+                  goalUnit: habit.goalUnit,
+                  frequency: 'Daily',
+                  value: 0,
+                  date: date,
+                })
+              } catch (error) {
+                console.error("Erreur lors de la création d'une nouvelle habitude :", error)
+              }
             })
           )
         }
       }
-      console.log(currentDate)
 
       if (!resetHabit) {
-        await ResetHabits.create({ date: new Date(currentDate), userId: userId })
+        try {
+          await ResetHabits.create({ date: new Date(currentDate), userId: userId, type: 'Daily' })
+        } catch (error) {
+          console.error("Erreur lors de la création d'un nouveau reset habit :", error)
+        }
       } else {
-        await ResetHabits.query()
-          .where('user_id', userId)
-          .update({ date: new Date(currentDate) })
+        try {
+          await ResetHabits.query()
+            .where('user_id', userId)
+            .update({ date: new Date(currentDate) })
+        } catch (error) {
+          console.error('Erreur lors de la mise à jour du reset habit existant :', error)
+        }
       }
     }
   }
 
-  // Fonction pour obtenir les dates manquantes entre deux dates
+  async resetWeeklyHabits({ session }: HttpContext) {
+    const userId = session.get('authenticated_user')
+
+    // Vérifiez s'il existe des habitudes hebdomadaires pour l'utilisateur
+    const existingWeeklyHabits = await Habits.query()
+      .where('frequency', 'Weekly')
+      .where('user_id', userId)
+      .orderBy('created_at', 'desc')
+      .first()
+
+    // Récupérez ou créez un enregistrement de réinitialisation hebdomadaire
+    let resetHabit = await ResetHabits.query()
+      .where('user_id', userId)
+      .where('type', 'Weekly')
+      .first()
+
+    if (existingWeeklyHabits) {
+      const currentDate = new Date()
+      const startOfCurrentWeek = new Date(currentDate)
+      const currentDay = currentDate.getDay() // 0 pour dimanche, 1 pour lundi, ..., 6 pour samedi
+
+      // Calculez la différence entre la date actuelle et le premier jour de la semaine (lundi)
+      const diff = currentDay === 0 ? 6 : currentDay - 1 // 0 pour dimanche, 1 pour lundi, ..., 6 pour samedi
+      startOfCurrentWeek.setDate(currentDate.getDate() - diff)
+
+      const lastResetDate = new Date(existingWeeklyHabits.date)
+
+      // Vérifiez si la dernière habitude hebdomadaire a été créée pendant la semaine en cours
+      const isCurrentWeek = lastResetDate >= startOfCurrentWeek && lastResetDate < currentDate
+
+      // Définissez la date de début de la semaine en cours en fonction de la dernière habitude hebdomadaire
+      let currentWeekStartDate = startOfCurrentWeek
+      if (isCurrentWeek) {
+        currentWeekStartDate = new Date(lastResetDate)
+        currentWeekStartDate.setDate(
+          currentWeekStartDate.getDate() - currentWeekStartDate.getDay() + 1 - 7
+        )
+      }
+
+      // Vérifiez si la dernière habitude hebdomadaire a été créée la semaine précédente
+      if (!isCurrentWeek && lastResetDate < startOfCurrentWeek) {
+        // Vérifiez s'il n'y a pas déjà une habitude pour la semaine en cours
+        const existingHabitForCurrentWeek = await Habits.query()
+          .where('frequency', 'Weekly')
+          .where('user_id', userId)
+          .where('date', currentWeekStartDate.toISOString().split('T')[0])
+          .first()
+
+        if (!existingHabitForCurrentWeek) {
+          // Créez une nouvelle habitude pour la semaine en cours
+          await Habits.create({
+            userId: userId,
+            customCategoryId: existingWeeklyHabits.customCategoryId,
+            defaultCategoryId: existingWeeklyHabits.defaultCategoryId,
+            goalValue: existingWeeklyHabits.goalValue,
+            goalUnit: existingWeeklyHabits.goalUnit,
+            frequency: 'Weekly',
+            value: 0,
+            date: currentWeekStartDate.toISOString().split('T')[0],
+          })
+
+          // Mettez à jour la date de la dernière réinitialisation hebdomadaire
+          if (!resetHabit) {
+            await ResetHabits.create({
+              date: new Date(currentWeekStartDate),
+              userId: userId,
+              type: 'Weekly',
+            })
+          } else {
+            await ResetHabits.query()
+              .where('user_id', userId)
+              .where('type', 'Weekly')
+              .update({ date: new Date(currentWeekStartDate) })
+          }
+        }
+      }
+    }
+  }
+
   async getMissingDates(startDate: string, endDate: string): Promise<string[]> {
     const missingDates: string[] = []
     const start = new Date(startDate)
     const end = new Date(endDate)
     const currentDate = new Date(start)
 
-    while (currentDate < end) {
+    // Convertir les dates en format ISO pour la comparaison
+    const isoStartDate = start.toISOString().split('T')[0]
+    const isoEndDate = end.toISOString().split('T')[0]
+
+    // Boucler sur toutes les dates entre startDate et endDate
+    while (currentDate <= end) {
+      const isoCurrentDate = currentDate.toISOString().split('T')[0]
+      // Vérifier si la date courante est comprise entre startDate et endDate
+      if (isoCurrentDate >= isoStartDate && isoCurrentDate <= isoEndDate) {
+        missingDates.push(isoCurrentDate)
+      }
+      // Passer à la prochaine date
       currentDate.setDate(currentDate.getDate() + 1)
-      missingDates.push(currentDate.toISOString().split('T')[0])
     }
 
     return missingDates

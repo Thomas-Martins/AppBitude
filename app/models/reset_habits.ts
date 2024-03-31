@@ -12,6 +12,9 @@ export default class ResetHabits extends BaseModel {
   @column()
   declare userId: UserId
 
+  @column()
+  declare type: string
+
   @belongsTo(() => User)
   declare user: BelongsTo<typeof User>
 }
